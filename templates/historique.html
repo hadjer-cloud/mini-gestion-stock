@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique des mouvements</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="navbar">
+        <h1>Ma Boutique</h1>
+        <p>Historique des mouvements de stock</p>
+
+        <nav>
+            <a class="active" href="{{ url_for('accueil') }}">Produits</a>
+            <a href="{{ url_for('historique') }}">Historique des mouvements</a>
+        </nav>
+        
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Historique des mouvements</h2>
+
+            <a class="btn-modifier"
+               href="{{ url_for('accueil') }}">
+                Retour aux produits
+            </a>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Produit</th>
+                            <th>Type</th>
+                            <th>Quantité</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for mouvement in mouvements %}
+                        <tr>
+                            <td>{{ mouvement[0] }}</td>
+                            <td>{{ mouvement[1] }}</td>
+                            <td>{{ mouvement[2] }}</td>
+                            <td>{{ mouvement[3] }}</td>
+                            <td>{{ mouvement[4] }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5">
+                                Aucun mouvement enregistré.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

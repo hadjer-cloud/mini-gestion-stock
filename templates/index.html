@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Gestion de stock</title>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Ma Boutique</h1>
+        <p>Gestion de stock</p>
+
+         <nav>
+            <a class="active" href="{{ url_for('accueil') }}">Produits</a>
+            <a href="{{ url_for('historique') }}">Historique des mouvements</a>
+        </nav>
+
+    </div>
+    <div class="container">
+        <h2>Gestion de stock</h2>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    <div class="table-container">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Produits</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Catégorie</th>
+                    <th>Options</th>
+                    <th>Mouvements</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produit in produits%} <!-- répète une ligne pour chaque produit -->
+                <tr>
+                    <td>{{ produit[1] }}</td>
+                    <td>{{ produit[2] }}</td>
+                    <td>{{ produit[3] }}</td>
+                    <td>{{ produit[4] }}</td>
+                    <td>
+                        <a class="btn-modifier" href="{{ url_for('modifier', id_produit=produit[0]) }}">
+                            Modifier
+                        </a> 
+                        <form action="{{ url_for('supprimer', id_produit=produit[0]) }}" method="POST" style="display: inline;"
+                            onsubmit="return confirm('Voulez-vous vraiment supprimer ce produit ?');">
+                            <button class="btn-supprimer" type="submit">Supprimer</button>
+                        </form>
+                    </td>
+                    
+                    <td>
+                        <form class="movement-form" action="{{ url_for('entree') }}" method="POST">
+                            <input type="hidden" name="id_produit" value="{{ produit[0] }}">
+                            <label>Entrée :</label>
+                            <input type="number" name="quantite" min="1" required>
+                            <button class="btn-entree" type="submit">Ajouter au stock</button>
+                        </form>
+
+                        <form class="movement-form" action="{{ url_for('sortie') }}" method="POST">
+                            <input type="hidden" name="id_produit" value="{{ produit[0] }}">
+                            <label>Sortie :</label>
+                            <input type="number" name="quantite" min="1" required>
+                            <button class="btn-sortie" type="submit">Retirer du stock</button>
+                        </form>
+                    </td>
+
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6">Aucun produit enregistré</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        <div class="card">
+        <h2>Ajouter un produit</h2>
+            <form class="product-form" action="{{ url_for('ajouter') }}" method="POST">
+                <div class="form-group">
+                    <label for="nom">Nom du produit</label>
+                    <input type="text" id="nom" name="nom" required>
+                </div>
+                <div class="form-group">
+                    <label for="prix">Prix :</label>
+                    <input type="number" id="prix" name="prix" step="0.01" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantite">Quantité :</label>
+                    <input type="number" id="quantite" name="quantite" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="categorie_id">Catégorie :</label>
+                    <select name="categorie_id" id="categorie_id" required>
+                        <option value="" selected disabled>Choisir une catégorie</option>
+                        {% for categorie in categories %}
+                        <option value="{{ categorie[0] }}">
+                            {{ categorie[1] }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button class="btn-ajouter" type="submit">Ajouter le produit</button>
+            </form>
+        </div>
+    </div>   
+</body>
+</html>
