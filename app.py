@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from produits import ajouter_produits, afficher_produits, modifier_produit, supprimer_produits, entree_stock, sortie_stock, afficher_mouvements
 from categories import afficher_categories
+from database import creer_tables
 
 app = Flask(__name__)
+
+creer_tables()
 
 app.secret_key = "cle-secrete-dev"
 
