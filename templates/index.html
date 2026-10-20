@@ -80,38 +80,68 @@
             </tbody>
         </table>
         </div>
-        <div class="card">
-        <h2>Ajouter un produit</h2>
-            <form class="product-form" action="{{ url_for('ajouter') }}" method="POST">
-                <div class="form-group">
-                    <label for="nom">Nom du produit</label>
-                    <input type="text" id="nom" name="nom" required>
-                </div>
-                <div class="form-group">
-                    <label for="prix">Prix :</label>
-                    <input type="number" id="prix" name="prix" step="0.01" min="0" required>
-                </div>
+       <!-- Carte Ajouter une catégorie -->
+<div class="card">
+    <h2>Ajouter une catégorie</h2>
 
-                <div class="form-group">
-                    <label for="quantite">Quantité :</label>
-                    <input type="number" id="quantite" name="quantite" min="0" required>
-                </div>
+    <form action="{{ url_for('ajouter_categorie_route') }}" method="POST">
 
-                <div class="form-group">
-                    <label for="categorie_id">Catégorie :</label>
-                    <select name="categorie_id" id="categorie_id" required>
-                        <option value="" selected disabled>Choisir une catégorie</option>
-                        {% for categorie in categories %}
-                        <option value="{{ categorie[0] }}">
-                            {{ categorie[1] }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <button class="btn-ajouter" type="submit">Ajouter le produit</button>
-            </form>
+        <div class="form-group">
+            <label for="nom_categorie">Nom de la catégorie</label>
+            <input type="text"
+                   id="nom_categorie"
+                   name="nom"
+                   placeholder="Ex : Informatique"
+                   required>
         </div>
+
+        <button class="btn-ajouter" type="submit">
+            Ajouter la catégorie
+        </button>
+
+    </form>
+</div>
+
+<!-- Carte Ajouter un produit -->
+<div class="card">
+    <h2>Ajouter un produit</h2>
+
+    <form class="product-form" action="{{ url_for('ajouter') }}" method="POST">
+
+        <div class="form-group">
+            <label for="nom">Nom du produit</label>
+            <input type="text" id="nom" name="nom" required>
+        </div>
+
+        <div class="form-group">
+            <label for="prix">Prix</label>
+            <input type="number" id="prix" name="prix" step="0.01" min="0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="quantite">Quantité</label>
+            <input type="number" id="quantite" name="quantite" min="0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="categorie_id">Catégorie</label>
+            <select name="categorie_id" id="categorie_id" required>
+                <option value="" selected disabled>Choisir une catégorie</option>
+
+                {% for categorie in categories %}
+                <option value="{{ categorie[0] }}">
+                    {{ categorie[1] }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button class="btn-ajouter" type="submit">
+            Ajouter le produit
+        </button>
+
+    </form>
+</div>
     </div>   
 </body>
 </html>

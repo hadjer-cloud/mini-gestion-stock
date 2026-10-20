@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from produits import ajouter_produits, afficher_produits, modifier_produit, supprimer_produits, entree_stock, sortie_stock, afficher_mouvements
-from categories import afficher_categories
+from categories import afficher_categories, ajouter_categorie
 from database import creer_tables
 
 app = Flask(__name__)
@@ -18,6 +18,21 @@ def accueil():
                            categories = categories) #transmet les données au fichier HTML.
 
 
+
+@app.route("/ajouter_categorie", methods=["POST"])
+def ajouter_categorie_route():
+    nom = request.form["nom"].strip()
+
+    if nom:
+        ajouter_categorie(nom)
+        flash("Catégorie ajoutée avec succès.")
+    else:
+        flash("Veuillez saisir un nom de catégorie.")
+
+    return redirect(url_for("accueil"))
+
+
+
 @app.route("/ajouter", methods=["POST"])
 def ajouter():
     nom = request.form["nom"]
@@ -26,6 +41,7 @@ def ajouter():
     categorie_id = int(request.form["categorie_id"])
     ajouter_produits(nom, prix, quantite, categorie_id)
     return redirect(url_for("accueil"))
+
 
 @app.route("/modifier/<int:id_produit>", methods=["GET", "POST"])
 def modifier(id_produit):
